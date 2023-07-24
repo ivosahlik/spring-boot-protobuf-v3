@@ -21,6 +21,6 @@ class AppTests {
                 "/customers/2", CustomerProtos.Customer.class);
 
         System.out.println("customer retrieved: " + customerResponse.toString());
-        assertThat(customerResponse.getBody().getFirstName()).isEqualTo("Josh");
+        assertThat(customerResponse.getBody().getFirstName()).isEqualTo("Java 11");
     }
 }
