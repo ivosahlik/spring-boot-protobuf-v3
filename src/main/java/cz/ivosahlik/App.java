@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -28,10 +28,13 @@ public class App {
     private CustomerProtos.Customer customer(int id, String firstname, String lastname, Collection<String> emails) {
 
         Collection<CustomerProtos.Customer.EmailAddress> emailAddresses =
-                emails.stream().map(e -> CustomerProtos.Customer.EmailAddress.newBuilder()
+                emails.stream()
+                        .map(e -> CustomerProtos.Customer.EmailAddress.newBuilder()
                                 .setType(CustomerProtos.Customer.EmailType.PROFESSIONAL)
-                                .setEmail(e).build())
-                        .collect(Collectors.toList());
+                                .setEmail(e)
+                                .build()
+                        )
+                        .toList();
 
         return CustomerProtos.Customer.newBuilder()
                 .setFirstName(firstname)
@@ -47,10 +50,10 @@ public class App {
         Map<Integer, CustomerProtos.Customer> customers = new ConcurrentHashMap<>();
         // populate with some dummy data
         asList(
-                customer(1, "Java 8", "Temurin", asList("java8@email.com")),
-                customer(2, "Java 11", "Temurin", asList("java11@email.com")),
-                customer(3, "Java 15", "Temurin", asList("java15@email.com")),
-                customer(4, "Java 17", "Temurin", asList("java17@email.com"))
+                customer(1, "Java 8", "OpenJDK", List.of("java8@email.com")),
+                customer(2, "Java 11", "OpenJDK", List.of("java11@email.com")),
+                customer(3, "Java 15", "Temurin", List.of("java15@email.com")),
+                customer(4, "Java 17", "Temurin", List.of("java17@email.com"))
         ).forEach(c -> customers.put(c.getId(), c));
 
         return new CustomerRepository() {
