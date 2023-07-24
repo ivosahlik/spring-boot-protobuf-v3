@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package demo;
+
+option java_package = "cz.ivosahlik";
+option java_outer_classname = "CustomerProtos";
+
+
+message Customer {
+    int32 id = 1;
+    string firstName = 2;
+    string lastName = 3;
+
+    enum EmailType {
+        PRIVATE = 0;
+        PROFESSIONAL = 1;
+    }
+
+    message EmailAddress {
+        string email = 1;
+        optional EmailType type = 2;
+    }
+
+    repeated EmailAddress email = 5;
+}
+
+message Organization {
+    string name = 1;
+    repeated Customer customer = 2;
+}
+
+message CustomerList {
+    repeated Customer customer = 1;
+}
